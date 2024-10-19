@@ -2,7 +2,7 @@
 
 #include <SPI.h>
 #include <RF24.h>
-
+#include <stdlib.h>
 // Define NRF24L01 pins for ESP8266 (NodeMCU)
 #define CE_PIN    D2  // GPIO4
 #define CSN_PIN   D8  // GPIO15
@@ -12,6 +12,8 @@ RF24 radio(CE_PIN, CSN_PIN);
 
 // Define the pipe addresses for communication
 const byte address[6] = "00001";
+
+uint32_t count = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -23,8 +25,12 @@ void setup() {
     while (1);
   }
 
+  radio.setPALevel(RF24_PA_MAX);  // Set the Power Amplifier level to low
+
   // Set the data rate (optional, can be 250KBPS, 1MBPS, or 2MBPS)
-  radio.setDataRate(RF24_1MBPS);
+  radio.setDataRate(RF24_250KBPS);
+
+  radio.setChannel(125);  // Initial channel setting
 
   // Open writing pipe
   radio.openWritingPipe(address);
@@ -34,10 +40,11 @@ void setup() {
 }
 
 void loop() {
-  const char text[] = "Hello ESP8266";
 
+  char send_string[20] ;
+  sprintf(send_string,"count = %u",count++);
   // Send the data
-  bool report = radio.write(&text, sizeof(text));
+  bool report = radio.write(&send_string, sizeof(send_string));
 
   if (report) {
     Serial.println("Data sent successfully.");
@@ -45,5 +52,5 @@ void loop() {
     Serial.println("Sending failed.");
   }
 
-  delay(1000); // Wait for a second before sending next data
+  delay(10); // Wait for a second before sending next data
 }

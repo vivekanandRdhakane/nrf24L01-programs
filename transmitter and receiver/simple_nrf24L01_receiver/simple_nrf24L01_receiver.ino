@@ -23,8 +23,12 @@ void setup() {
     while (1);
   }
 
+  radio.setPALevel(RF24_PA_MAX);  // Set the Power Amplifier level to low
+
   // Set the data rate (optional, must match transmitter)
-  radio.setDataRate(RF24_1MBPS);
+  radio.setDataRate(RF24_250KBPS);
+
+  radio.setChannel(125);  // Initial channel setting
 
   // Open reading pipe
   radio.openReadingPipe(0, address);
@@ -34,10 +38,15 @@ void setup() {
 }
 
 void loop() {
+  uint8_t noiseLevel = radio.testRPD();  // Returns if signal power was detected (greater than -64dBm)
   if (radio.available()) {
     char text[32] = ""; // Buffer to store received data
     radio.read(&text, sizeof(text));
     Serial.print("Received: ");
     Serial.println(text);
+
+    Serial.print("signal power: ");
+    Serial.println(noiseLevel);
+    
   }
 }
