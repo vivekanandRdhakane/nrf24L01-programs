@@ -4,7 +4,7 @@
 #include <RF24.h>
 #include <stdlib.h>
 // Define NRF24L01 pins for ESP8266 (NodeMCU)
-#define CE_PIN    D2  // GPIO4
+#define CE_PIN    D3  // GPIO4
 #define CSN_PIN   D8  // GPIO15
 
 // Initialize RF24 object
@@ -52,5 +52,5 @@ void loop() {
     Serial.println("Sending failed.");
   }
 
-  delay(10); // Wait for a second before sending next data
+  delay(100); // Wait for a second before sending next data
 }

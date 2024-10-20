@@ -4,7 +4,7 @@
 #include <RF24.h>
 
 // Define NRF24L01 pins for ESP8266 (NodeMCU)
-#define CE_PIN    D2  // GPIO4
+#define CE_PIN    D3  // GPIO4
 #define CSN_PIN   D8  // GPIO15
 
 // Initialize RF24 object
